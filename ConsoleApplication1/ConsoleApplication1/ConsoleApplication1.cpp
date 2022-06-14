@@ -2,15 +2,20 @@
 #include <gl\glut.h>
 #include <math.h>
 #include "funcao.h"
+#include "MarchingCube.h"
+
 float theta = 135;
 float phi = 45;
 float gamma = 90;
 float scale = 1.0;
 int xb, xm, yb, ym;
 funcao f;
+MarchingCube marcing;
 
 #define NUM_CUBOS 64
 #define TAM_GRID 4 // GRID = TAM_GRID x TAM_GRID x TAM_GRID 
+#define NUM_PONTOS 125 // (TAM_GRID + 1)^3;
+
 #define X_MIN -2.0
 #define Y_MIN -2.0
 #define Z_MIN -2.0
@@ -18,10 +23,10 @@ funcao f;
 #define Y_MAX 2.0
 #define Z_MAX 2.0
 
-#define NUM_PONTOS 125 // (TAM_GRID + 1)^3;
+
 
 double p[NUM_PONTOS][3];
-int animacao = 0; // animacao = 1 se quer ver o algoritmo animado
+int animacao = 1; // animacao = 1 se quer ver o algoritmo animado
 int index = 0;
 
 using namespace std;
@@ -192,6 +197,9 @@ void keyboard(unsigned char key, int x, int y)
 			if (index < NUM_PONTOS) {
 				inicia_config();
 				redesenha();
+			}
+			else {
+				index = 0;
 			}
 			cout << index << endl;
 		}
