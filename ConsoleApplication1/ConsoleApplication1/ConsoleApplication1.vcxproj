@@ -152,6 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="funcao.cpp" />
+    <ClCompile Include="MarchingCube.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="funcao.h" />
+    <ClInclude Include="MarchingCube.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
