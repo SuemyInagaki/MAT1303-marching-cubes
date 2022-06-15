@@ -10,7 +10,7 @@ float gamma = 90;
 float scale = 1.0;
 int xb, xm, yb, ym;
 funcao f;
-MarchingCube marcing;
+MarchingCube marching;
 
 #define NUM_CUBOS 64
 #define TAM_GRID 4 // GRID = TAM_GRID x TAM_GRID x TAM_GRID 
@@ -22,7 +22,6 @@ MarchingCube marcing;
 #define X_MAX 2.0
 #define Y_MAX 2.0
 #define Z_MAX 2.0
-
 
 
 double p[NUM_PONTOS][3];
@@ -151,6 +150,12 @@ void plota_eixos()
 	glVertex3f(0.0, 0.0, 0.0);
 	glEnd();
 }
+
+void usa_marching_cube() {
+	for (int i = 0; i < NUM_CUBOS; i++) {
+
+	}
+}
 void inicia_config()
 {
 	glMatrixMode(GL_PROJECTION);
@@ -172,7 +177,7 @@ void redesenha()
 	if (animacao == 1) {
 		percorre_pontos();
 	}
-	f.plota_funcao();
+	//f.plota_funcao();
 	glutSwapBuffers();
 }
 

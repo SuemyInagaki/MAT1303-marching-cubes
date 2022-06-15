@@ -16,5 +16,9 @@ public:
 		return (x*x + y * y);
 	}
 
+	float f2(float x, float y, float z) {
+		return (x*x + y * y + z * z - 1.0);
+	}
+
 	void plota_funcao();
 };
