@@ -4,6 +4,8 @@
 #include "funcao.h"
 #include "MarchingCube.h"
 
+#define NUM_CUBOS 2197 // Preferencialmente um numero cubo perfeito
+
 float theta = 135;
 float phi = 45;
 float gamma = 90;
@@ -12,7 +14,6 @@ int xb, xm, yb, ym;
 funcao f;
 MarchingCube marching;
 double ox, oy, oz;
-#define NUM_CUBOS 2197 // Preferencialmente um numero cubo perfeito
 int TAM_GRID = (int) cbrt(NUM_CUBOS);
 
 
@@ -433,6 +434,7 @@ int main(int argc, char **argv)
 	cout << "c -> mostra/oculta a curva resultante do marching cubes" << endl;
 	cout << "s -> mostra/oculta a silhueta" << endl;
 	cout << "g -> mostra/oculta o grid" << endl;
+	cout << "Obs: eh possivel alterar a quantidade de cubos do grid. Basta alterar o valor de NUM_CUBOS no codigo (Preferencialmente um numero cubo perfeito)" << endl;
 
 	preenche_vetor_dados_cubos();
 	glutInit(&argc, argv);
