@@ -13,7 +13,7 @@ funcao f;
 MarchingCube marching;
 
 #define NUM_CUBOS 64
-#define TAM_GRID 4 // GRID = TAM_GRID x TAM_GRID x TAM_GRID 
+#define TAM_GRID 4 // GRID = TAM_GRID x TAM_GRID x TAM_GRID = raiz cubica de NUM_CUBOS
 #define NUM_PONTOS 125 // (TAM_GRID + 1)^3;
 
 #define X_MIN -2.0
@@ -29,6 +29,27 @@ int animacao = 1; // animacao = 1 se quer ver o algoritmo animado
 int index = 0;
 
 using namespace std;
+
+
+typedef struct {
+	double x;
+	double y;
+	double z;
+} XYZ;
+
+// vertices do triangulo
+typedef struct {
+	XYZ p[3];
+} TRIANGLE;
+
+// Um cubo com 8 vértices e 8 valores de f(x, y, z)
+typedef struct {
+	XYZ p[8]; // Coordenada dos 8 vértices de um cubo
+	double val[8]; //Valor de f(x, y, z) para cada vértice do cubo
+} GRIDCELL;
+
+// uma lista de NUM_CUBOS posicoes do tipo GRIDCELL
+GRIDCELL dados_cubos[NUM_CUBOS];
 
 void preenche_vetor_pontos() {
 	double dx, dy, dz;
@@ -56,28 +77,130 @@ void preenche_vetor_pontos() {
 	}
 }
 
-void percorre_pontos() {
-	// apaga o ponto anterior
-	glPointSize(3.0);
-	if (index > 0) {
-		glColor3f(0.0, 0.0, 1.0);
-		glBegin(GL_POINTS);
-			glVertex3f(p[index -1][0], p[index -1][1], p[index -1][2]);
-		glEnd();
+
+void preenche_vetor_dados_cubos() {
+	int i_cubo = 0;
+	double dx, dy, dz;
+	double x, y, z;
+	dx = (X_MAX - X_MIN) / TAM_GRID;
+	dy = (Y_MAX - Y_MIN) / TAM_GRID;
+	dz = (Z_MAX - Z_MIN) / TAM_GRID;
+
+	x = X_MIN; y = Y_MIN; z = Z_MIN;
+	int n = 0;
+	int i = 0;
+	while (i < NUM_PONTOS) {
+		if (i % 5 != 4 && (i < 20 || i > 24) && (i < 45 || i > 49) && (i < 70 || i > 74) && i < 95) {
+			dados_cubos[i_cubo].p[0].x = p[i][0];
+			dados_cubos[i_cubo].p[0].y = p[i][1];
+			dados_cubos[i_cubo].p[0].z = p[i][2];
+
+			dados_cubos[i_cubo].p[1].x = p[i + 1][0];
+			dados_cubos[i_cubo].p[1].y = p[i + 1][1];
+			dados_cubos[i_cubo].p[1].z = p[i + 1][2];
+
+			dados_cubos[i_cubo].p[2].x = p[i + 5][0];
+			dados_cubos[i_cubo].p[2].y = p[i + 5][1];
+			dados_cubos[i_cubo].p[2].z = p[i + 5][2];
+
+			dados_cubos[i_cubo].p[3].x = p[i + 6][0];
+			dados_cubos[i_cubo].p[3].y = p[i + 6][1];
+			dados_cubos[i_cubo].p[3].z = p[i + 6][2];
+
+			dados_cubos[i_cubo].p[4].x = p[i + 25][0];
+			dados_cubos[i_cubo].p[4].y = p[i + 25][1];
+			dados_cubos[i_cubo].p[4].z = p[i + 25][2];
+
+			dados_cubos[i_cubo].p[5].x = p[i + 26][0];
+			dados_cubos[i_cubo].p[5].y = p[i + 26][1];
+			dados_cubos[i_cubo].p[5].z = p[i + 26][2];
+
+			dados_cubos[i_cubo].p[6].x = p[i + 30][0];
+			dados_cubos[i_cubo].p[6].y = p[i + 30][1];
+			dados_cubos[i_cubo].p[6].z = p[i + 30][2];
+
+			dados_cubos[i_cubo].p[7].x = p[i + 31][0];
+			dados_cubos[i_cubo].p[7].y = p[i + 31][1];
+			dados_cubos[i_cubo].p[7].z = p[i + 31][2];
+
+			for (int j = 0; j < 8; j++) {
+				dados_cubos[i_cubo].val[j] = f.f2(dados_cubos[i_cubo].p[j].x, dados_cubos[i_cubo].p[j].y, dados_cubos[i_cubo].p[j].z);
+			}
+			i_cubo++;
+		}		
+		i++;
 	}
-	else {
-		glColor3f(0.0, 0.0, 1.0);
-		glBegin(GL_POINTS);
-			glVertex3f(p[63][0], p[63][1], p[63][2]);
-		glEnd();
-	}
+}
+
+void percorre_cubos() {
 	
-	// pinta o ponto atual
-	glColor3f(1.0, 0.5, 0.0);
-	glBegin(GL_POINTS);
-		glVertex3f(p[index][0], p[index][1], p[index][2]);
+	for (int j = 0; j < 8; j++) {
+		glColor3f(1.0, 0.5, 0.0);
+		glBegin(GL_POINTS);
+		glVertex3f(dados_cubos[index].p[j].x, dados_cubos[index].p[j].y, dados_cubos[index].p[j].z);
+		glEnd();
+		glLineWidth(1);		
+	}
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[0].x, dados_cubos[index].p[0].y, dados_cubos[index].p[0].z);
+		glVertex3f(dados_cubos[index].p[1].x, dados_cubos[index].p[1].y, dados_cubos[index].p[1].z);
 	glEnd();
-	glLineWidth(1);
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[0].x, dados_cubos[index].p[0].y, dados_cubos[index].p[0].z);
+		glVertex3f(dados_cubos[index].p[2].x, dados_cubos[index].p[2].y, dados_cubos[index].p[2].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[3].x, dados_cubos[index].p[3].y, dados_cubos[index].p[3].z);
+		glVertex3f(dados_cubos[index].p[2].x, dados_cubos[index].p[2].y, dados_cubos[index].p[2].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[3].x, dados_cubos[index].p[3].y, dados_cubos[index].p[3].z);
+		glVertex3f(dados_cubos[index].p[1].x, dados_cubos[index].p[1].y, dados_cubos[index].p[1].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[0].x, dados_cubos[index].p[0].y, dados_cubos[index].p[0].z);
+		glVertex3f(dados_cubos[index].p[4].x, dados_cubos[index].p[4].y, dados_cubos[index].p[4].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[5].x, dados_cubos[index].p[5].y, dados_cubos[index].p[5].z);
+		glVertex3f(dados_cubos[index].p[4].x, dados_cubos[index].p[4].y, dados_cubos[index].p[4].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[6].x, dados_cubos[index].p[6].y, dados_cubos[index].p[6].z);
+		glVertex3f(dados_cubos[index].p[4].x, dados_cubos[index].p[4].y, dados_cubos[index].p[4].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[5].x, dados_cubos[index].p[5].y, dados_cubos[index].p[5].z);
+		glVertex3f(dados_cubos[index].p[7].x, dados_cubos[index].p[7].y, dados_cubos[index].p[7].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[6].x, dados_cubos[index].p[6].y, dados_cubos[index].p[6].z);
+		glVertex3f(dados_cubos[index].p[7].x, dados_cubos[index].p[7].y, dados_cubos[index].p[7].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[1].x, dados_cubos[index].p[1].y, dados_cubos[index].p[1].z);
+		glVertex3f(dados_cubos[index].p[5].x, dados_cubos[index].p[5].y, dados_cubos[index].p[5].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[6].x, dados_cubos[index].p[6].y, dados_cubos[index].p[6].z);
+		glVertex3f(dados_cubos[index].p[2].x, dados_cubos[index].p[2].y, dados_cubos[index].p[2].z);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex3f(dados_cubos[index].p[3].x, dados_cubos[index].p[3].y, dados_cubos[index].p[3].z);
+		glVertex3f(dados_cubos[index].p[7].x, dados_cubos[index].p[7].y, dados_cubos[index].p[7].z);
+	glEnd();
+
 	
 }
 
@@ -175,7 +298,7 @@ void redesenha()
 	desenha_grid();
 	plota_eixos();
 	if (animacao == 1) {
-		percorre_pontos();
+		percorre_cubos();
 	}
 	//f.plota_funcao();
 	glutSwapBuffers();
@@ -199,7 +322,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'n':
 		if (animacao == 1) {
 			index++;
-			if (index < NUM_PONTOS) {
+			if (index < NUM_CUBOS) {
 				inicia_config();
 				redesenha();
 			}
@@ -242,7 +365,8 @@ void mov_mouse(int x, int y)
 void main(int argc, char **argv)
 {
 	preenche_vetor_pontos();
-	
+	preenche_vetor_dados_cubos();
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(400, 400);
