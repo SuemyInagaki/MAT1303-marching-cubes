@@ -1,13 +1,15 @@
 class funcao {
-	float xmin, xmax, ymin, ymax;
+	float xmin, xmax, ymin, ymax, zmin, zmax;
 	int points;
 public:
 	funcao(float xm = -1, float xM = 1, float ym = -1, float yM =
-		1, int p = 10) {
+		1, float zm = -1, float zM = 1, int p = 10) {
 		xmin = xm;
 		ymin = ym;
 		xmax = xM;
 		ymax = yM;
+		zmin = zm;
+		zmax = zM;
 		points = p;
 	}
 

@@ -6,7 +6,6 @@
    an edge between two vertices, each with their own scalar value
 */
 
-
 typedef struct {
 	double x;
 	double y;
