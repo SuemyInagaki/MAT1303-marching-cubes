@@ -4,7 +4,7 @@
 #include "funcao.h"
 #include "MarchingCube.h"
 
-#define NUM_CUBOS 2197
+#define NUM_CUBOS 3000
 
 float theta = 135;
 float phi = 45;
@@ -334,14 +334,14 @@ void inicia_config()
 	glRotatef(theta, 0.0, 0.0, 1.0);
 	glScalef(scale, scale, scale);
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelview);
-	/*
+	
 	ox = modelview[2];
 	oy = modelview[6];
 	oz = modelview[10];
-	*/
+	/*
 	ox = modelview[8];
 	oy = modelview[9];
-	oz = modelview[10];
+	oz = modelview[10];*/
 }
 void redesenha()
 {
