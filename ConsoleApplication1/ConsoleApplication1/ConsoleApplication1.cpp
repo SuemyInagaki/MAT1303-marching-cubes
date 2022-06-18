@@ -4,7 +4,7 @@
 #include "funcao.h"
 #include "MarchingCube.h"
 
-#define NUM_CUBOS 2197 // Preferencialmente um numero cubo perfeito
+#define NUM_CUBOS 2197
 
 float theta = 135;
 float phi = 45;
@@ -434,7 +434,7 @@ int main(int argc, char **argv)
 	cout << "c -> mostra/oculta a curva resultante do marching cubes" << endl;
 	cout << "s -> mostra/oculta a silhueta" << endl;
 	cout << "g -> mostra/oculta o grid" << endl;
-	cout << "Obs: eh possivel alterar a quantidade de cubos do grid. Basta alterar o valor de NUM_CUBOS no codigo (Preferencialmente um numero cubo perfeito)" << endl;
+	cout << "Obs: eh possivel alterar a quantidade de cubos do grid. Basta alterar o valor de NUM_CUBOS no codigo" << endl;
 
 	preenche_vetor_dados_cubos();
 	glutInit(&argc, argv);
